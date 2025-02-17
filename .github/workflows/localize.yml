@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - main
+      - try_fix_loc
     paths:
+      - 'scripts/*'
       - '**.strings'
       - '**.stringsdict'
   # Also run every day at midnight to pick up new localizations
   schedule:
     # * is a special character in YAML so you have to quote this string
     - cron:  '0 0 * * *'
-
 jobs:
   Localize:
     runs-on: ubuntu-latest
