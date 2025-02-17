@@ -7,7 +7,7 @@ outputDirectory=""
 renameLanguageFolder=true
 extension=""
 parserId=0
-isoauth=true
+isoauth=false
 tokenServer="tdb-touchdownbuild-prod"
 
 function ParseArgs()
@@ -50,7 +50,7 @@ echo File Path: $filePath
 echo Relative Path: $relativeFilePath
 echo Parser Id: $parserId
 echo Output Directory: $outputDirectory
-if [ $isoauth = true ]; then
+if($isoauth = true); then
 echo "using oauth."
 else
 echo "using NTLM."
@@ -90,17 +90,19 @@ echo "Relative file path $relPath"
 
 if [ "$isoauth" = false ]; then
 response=$(curl --ntlm -u $alias:$password -H "x-TDBuildWrapper: FluentUI-Apple" -X put https://build.intlservices.microsoft.com/api/teams/$id/LocalizableFiles/ParserId/$parserId --form 'FilePath={"FilePath":"'$relPath'"};type=application/json' --form "file=@$file;type=application/octet-stream" -o "$fileName.zip")
-echo "ntlm Response result LocalizableFiles call $response"
+echo "Response result LocalizableFiles call $response"
 else
 tokenValue=$(oauthToken)
 response=$(curl -H "Authorization: Bearer $tokenValue" -H "Accept: application/json" -H "x-TDBuildWrapper: FluentUI-Apple" -X put https://build.intlservices.microsoft.com/api/teams/$id/LocalizableFiles/ParserId/$parserId --form 'FilePath={"FilePath":"'$relPath'"};type=application/json' --form "file=@$file;type=application/octet-stream" -o "$fileName.zip")
-echo "oauth Response result LocalizableFiles call $response"
+echo "Response result LocalizableFiles call $response"
 fi
 
-ls -la
-file $fileName.zip
-
 if [ -f $fileName.zip ]; then
+echo "Printing the contents of $fileName.zip"
+mv "$fileName.zip" "$fileName.txt"
+cat "$fileName.txt"
+mv "$fileName.txt" "$fileName.zip"
+
 unzip -o $fileName.zip -d $outputDirectory
 rm $fileName.zip
 fi
@@ -117,8 +119,6 @@ tokenValue=$(oauthToken)
 response=$(curl -H "Authorization: Bearer $tokenValue" -H "Accept: application/json" -H "x-TDBuildWrapper: FluentUI-Apple" -X put https://build.intlservices.microsoft.com/api/teams/$id/LocalizableFiles/ParserId/$parserId --form 'FilePath={"FilePath":"'$relativeFilePath'"};type=application/json' --form "file=@$filePath;type=application/octet-stream" -o loc.zip)
 echo "Response result for LocalizableFiles call $response"
 fi
-
-ls -la
 
 if [ -f loc.zip ]; then
 unzip -o loc.zip -d $outputDirectory
