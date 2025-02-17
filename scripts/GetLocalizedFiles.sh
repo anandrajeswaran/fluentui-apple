@@ -7,7 +7,7 @@ outputDirectory=""
 renameLanguageFolder=true
 extension=""
 parserId=0
-isoauth=false
+isoauth=true
 tokenServer="tdb-touchdownbuild-prod"
 
 function ParseArgs()
