@@ -90,11 +90,11 @@ echo "Relative file path $relPath"
 
 if [ "$isoauth" = false ]; then
 response=$(curl --ntlm -u $alias:$password -H "x-TDBuildWrapper: FluentUI-Apple" -X put https://build.intlservices.microsoft.com/api/teams/$id/LocalizableFiles/ParserId/$parserId --form 'FilePath={"FilePath":"'$relPath'"};type=application/json' --form "file=@$file;type=application/octet-stream" -o "$fileName.zip")
-echo "Response result LocalizableFiles call $response"
+echo "ntlm Response result LocalizableFiles call $response"
 else
 tokenValue=$(oauthToken)
 response=$(curl -H "Authorization: Bearer $tokenValue" -H "Accept: application/json" -H "x-TDBuildWrapper: FluentUI-Apple" -X put https://build.intlservices.microsoft.com/api/teams/$id/LocalizableFiles/ParserId/$parserId --form 'FilePath={"FilePath":"'$relPath'"};type=application/json' --form "file=@$file;type=application/octet-stream" -o "$fileName.zip")
-echo "Response result LocalizableFiles call $response"
+echo "Oauth Response result LocalizableFiles call $response"
 fi
 
 if [ -f $fileName.zip ]; then
