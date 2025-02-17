@@ -98,6 +98,7 @@ echo "oauth Response result LocalizableFiles call $response"
 fi
 
 ls -la
+file $fileName.zip
 
 if [ -f $fileName.zip ]; then
 unzip -o $fileName.zip -d $outputDirectory
