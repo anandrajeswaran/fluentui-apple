@@ -100,7 +100,7 @@ fi
 if [ -f $fileName.zip ]; then
 echo "Printing the contents of $fileName.zip"
 mv "$fileName.zip" "$fileName.txt"
-cat "$fileName.txt"
+cat "Zip file contents: $fileName.txt"
 mv "$fileName.txt" "$fileName.zip"
 
 unzip -o $fileName.zip -d $outputDirectory
